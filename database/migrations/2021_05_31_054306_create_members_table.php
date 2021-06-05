@@ -15,7 +15,7 @@ class CreateMembersTable extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->constrained('users')->nullable();
+            $table->integer('user_id')->constrained('users')->nullable();
             $table->string('FIO');
             $table->date('birthday');
             $table->string('role');

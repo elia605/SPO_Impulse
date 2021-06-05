@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Member;
+use App\Models\Role;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -64,10 +66,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+        $role = Role::create([
+            'user_id' => $user->id,
+            'role' => 'guest',
+        ]);
+        $member = Member::where('email', $user->email)->first();
+        if (!empty($member->email) && $member->email === $user->email)
+        {
+            $role->role = 'member';
+            $role->save();
+            $member->user_id = $user->id;
+            $member->save();
+        }
+        return $user;
     }
 }

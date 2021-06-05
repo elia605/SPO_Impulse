@@ -15,7 +15,7 @@ class CreateActionsTable extends Migration
     {
         Schema::create('actions', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->constrained('users')->cascadeOnDelete();
+            $table->integer('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('title');
             $table->text('description');
             $table->integer('members_current')->default(0);
